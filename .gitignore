@@ -52,3 +52,5 @@ models/*_training_history.csv
 
 # Generated prediction outputs
 reports/*predictions*.csv
+
+models/phase7.txt
