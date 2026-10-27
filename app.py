@@ -846,7 +846,7 @@ elif page == "News Analyzer":
             key="lime_explanation_class",
         )
 
-        if st.button("Generate LIME Explanation", width="stretch"):
+        if st.button("Generate LIME Explanation"):
             try:
                 with st.spinner(
                     f"Generating {result_model} word-level explanation..."
@@ -947,7 +947,6 @@ elif page == "Model Insights":
         st.dataframe(
             comparison,
             hide_index=True,
-            width="stretch",
         )
 
     st.markdown(
@@ -963,7 +962,6 @@ elif page == "Model Insights":
         st.dataframe(
             class_report,
             hide_index=True,
-            width="stretch",
         )
 
     st.markdown(
@@ -987,7 +985,7 @@ elif page == "Model Insights":
         columns=["Predicted Fake", "Predicted Real"],
     )
 
-    st.dataframe(cm, width="stretch")
+    st.dataframe(cm)
 
     st.caption(
         "Matrix layout: actual Fake → 3,461 Fake and 42 Real predictions; "
@@ -1014,7 +1012,6 @@ elif page == "Model Insights":
 
         st.dataframe(
             mistakes.head(100),
-            width="stretch",
         )
 
         st.caption(
