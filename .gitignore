@@ -42,7 +42,6 @@ models/*.pkl
 models/*predictions*.csv
 models/*comparison*.csv
 models/*tuning*.csv
-models/misclassified_articles.csv
 
 # Local backup
 app_backup.py
