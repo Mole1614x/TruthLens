@@ -944,9 +944,9 @@ elif page == "Model Insights":
 
         st.caption("Comparison metrics are shown as percentages.")
 
-        st.dataframe(
-            comparison,
-            hide_index=True,
+        st.markdown(
+            comparison.to_html(index=False, escape=True, border=0),
+            unsafe_allow_html=True,
         )
 
     st.markdown(
