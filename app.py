@@ -9,6 +9,7 @@ import tensorflow as tf
 import keras_hub
 from lime.lime_text import LimeTextExplainer
 from scipy.special import expit
+from huggingface_hub import hf_hub_download
 
 
 # =========================================================
@@ -49,6 +50,25 @@ MODEL_PATHS = {
 }
 VECTORIZER_PATH = MODELS_DIR / "ann_text_vectorizer.keras"
 TFIDF_VECTORIZER_PATH = MODELS_DIR / "tfidf_vectorizer.pkl"
+
+
+MODEL_REPO_ID = "mnhyugjiokggc/truthlens-models"
+
+
+def resolve_model_path(filename):
+    """Use local artifacts when present; otherwise download from Hugging Face."""
+    local_path = MODELS_DIR / filename
+    if local_path.is_file():
+        return local_path
+
+    return Path(
+        hf_hub_download(
+            repo_id=MODEL_REPO_ID,
+            filename=filename,
+            repo_type="model",
+        )
+    )
+
 
 MODEL_DESCRIPTIONS = {
     "DistilBERT": "Transformer model using its KerasHub tokenizer and attention mask.",
@@ -285,12 +305,8 @@ def load_model_resources(model_name):
     if model_name not in MODEL_PATHS:
         raise ValueError(f"Unknown model selection: {model_name}")
 
-    model_path = MODEL_PATHS[model_name]
-    if not model_path.exists():
-        raise FileNotFoundError(
-            f"{model_name} model not found: {model_path}"
-        )
-
+    # Prefer local artifacts for development; download missing files for hosting.
+    model_path = resolve_model_path(MODEL_PATHS[model_name].name)
     resources = {"name": model_name, "model": None}
 
     if model_name == "DistilBERT":
@@ -305,13 +321,10 @@ def load_model_resources(model_name):
         })
 
     elif model_name in {"ANN", "LSTM", "BiLSTM", "CNN"}:
-        if not VECTORIZER_PATH.exists():
-            raise FileNotFoundError(
-                f"Shared text vectorizer not found: {VECTORIZER_PATH}"
-            )
+        vectorizer_path = resolve_model_path(VECTORIZER_PATH.name)
         model = tf.keras.models.load_model(model_path, compile=False)
         vectorizer_model = tf.keras.models.load_model(
-            VECTORIZER_PATH, compile=False
+            vectorizer_path, compile=False
         )
         resources.update({
             "model": model,
@@ -319,13 +332,12 @@ def load_model_resources(model_name):
         })
 
     elif model_name == "Linear SVM":
-        if not TFIDF_VECTORIZER_PATH.exists():
-            raise FileNotFoundError(
-                f"TF-IDF vectorizer not found: {TFIDF_VECTORIZER_PATH}"
-            )
+        tfidf_vectorizer_path = resolve_model_path(
+            TFIDF_VECTORIZER_PATH.name
+        )
         resources.update({
             "model": joblib.load(model_path),
-            "vectorizer": joblib.load(TFIDF_VECTORIZER_PATH),
+            "vectorizer": joblib.load(tfidf_vectorizer_path),
         })
 
     resources["explainer"] = LimeTextExplainer(
