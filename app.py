@@ -482,12 +482,20 @@ def load_class_report():
 
 @st.cache_data
 def load_misclassified():
-    if not MISCLASSIFIED_PATH.exists():
+    st.write("CSV path:", str(MISCLASSIFIED_PATH))
+    st.write("File exists:", MISCLASSIFIED_PATH.is_file())
+
+    if not MISCLASSIFIED_PATH.is_file():
         return pd.DataFrame()
 
+    st.write("File size:", MISCLASSIFIED_PATH.stat().st_size, "bytes")
+
     try:
-        return pd.read_csv(MISCLASSIFIED_PATH)
-    except Exception:
+        df = pd.read_csv(MISCLASSIFIED_PATH)
+        st.write("CSV loaded:", df.shape)
+        return df
+    except Exception as error:
+        st.error(f"CSV loading failed: {type(error).__name__}: {error}")
         return pd.DataFrame()
 
 
