@@ -737,8 +737,7 @@ elif page == "News Analyzer":
         )
 
         submitted = st.form_submit_button(
-            "▶  RUN TEXT ANALYSIS",
-            width="stretch",
+    "▶  RUN TEXT ANALYSIS"
         )
 
     if submitted:
