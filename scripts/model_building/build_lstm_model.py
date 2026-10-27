@@ -1,0 +1,66 @@
+from pathlib import Path
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
+# Model configuration
+VOCAB_SIZE = 20000
+SEQUENCE_LENGTH = 300
+EMBEDDING_DIM = 64
+LSTM_UNITS = 64
+
+# Build the LSTM model
+model = keras.Sequential(
+    [
+        keras.Input(
+            shape=(SEQUENCE_LENGTH,),
+            dtype="int32",
+            name="token_ids"
+        ),
+
+        layers.Embedding(
+            input_dim=VOCAB_SIZE,
+            output_dim=EMBEDDING_DIM,
+            mask_zero=True,
+            name="word_embedding"
+        ),
+
+        layers.LSTM(
+            LSTM_UNITS,
+            name="lstm_layer"
+        ),
+
+        layers.Dropout(
+            0.3,
+            name="dropout"
+        ),
+
+        layers.Dense(
+            1,
+            activation="sigmoid",
+            name="fake_real_output"
+        )
+    ],
+    name="truthlens_lstm"
+)
+
+# Configure training
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss="binary_crossentropy",
+    metrics=["accuracy"]
+)
+
+# Display the architecture
+model.summary()
+
+# Save the untrained model
+output_path = Path("models/truthlens_lstm_untrained.keras")
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+model.save(output_path)
+
+print(f"\nUntrained LSTM model saved to: {output_path}")
+print("Model input shape:", model.input_shape)
+print("Model output shape:", model.output_shape)
+print("Total parameters:", model.count_params())

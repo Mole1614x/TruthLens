@@ -1,0 +1,2 @@
+model,test_samples,accuracy,weighted_f1,correct_predictions,incorrect_predictions
+BiLSTM,7213,0.9751836961042563,0.9751806793344814,7034,179

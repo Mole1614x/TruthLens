@@ -1,0 +1,7 @@
+rank,model,test_samples,accuracy,weighted_f1,correct_predictions,incorrect_predictions
+1,DistilBERT,7213,0.992514,0.9925,7159,54
+2,CNN,7213,0.979897,0.9799,7068,145
+3,BiLSTM,7213,0.975184,0.9752,7034,179
+4,ANN,7213,0.965618,0.9656,6965,248
+5,Tuned Linear SVM,7213,0.954665,0.9547,6886,327
+6,LSTM,7213,0.916401,0.9164,6610,603

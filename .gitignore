@@ -1,0 +1,54 @@
+
+# Python cache and generated files
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# macOS
+.DS_Store
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Logs and temporary files
+*.log
+*.tmp
+
+
+# Local datasets (large files)
+data/raw/
+data/processed/
+
+# Local trained and intermediate model artifacts
+models/*.keras
+models/*.pkl
+
+# Generated prediction and analysis outputs
+models/*predictions*.csv
+models/*comparison*.csv
+models/*tuning*.csv
+models/misclassified_articles.csv
+
+# Local backup
+app_backup.py
+
+# Generated training histories
+models/*_training_history.csv
+
+# Generated prediction outputs
+reports/*predictions*.csv
