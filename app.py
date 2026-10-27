@@ -936,11 +936,7 @@ elif page == "Model Insights":
         chart_df = comparison[["model", "accuracy", "weighted_f1"]].copy()
         chart_df = chart_df.set_index("model") * 100
 
-        st.bar_chart(
-            chart_df,
-            height=350,
-            color=["#38e8ff", "#a78bfa"],
-        )
+        st.caption("Model comparison chart temporarily disabled.")
 
         st.caption("Comparison metrics are shown as percentages.")
 
