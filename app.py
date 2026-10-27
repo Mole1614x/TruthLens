@@ -692,7 +692,7 @@ if page == "Overview":
                     lambda x: f"{float(x) * 100:.2f}%"
                 )
 
-        st.dataframe(display, hide_index=True, width="stretch")
+        st.dataframe(display, hide_index=True, use_container_width=True)
 
     render_disclaimer()
 
